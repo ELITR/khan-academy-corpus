@@ -1,8 +1,6 @@
 # Extract audio from downloaded videos
 
-Second section extracts audio from downloaded videos. 
-Audio files are added to `10-download/data` to simplify further 
-processing.
+Second section extracts audio from downloaded videos.
 
 ```
 python run.py
