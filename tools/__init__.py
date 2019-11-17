@@ -7,4 +7,4 @@ from .khan_topic_tree.topic_tree import (
 
 from .youtube_download.youtube_download import download_youtube_video_and_subs
 
-from .audio import extract_audio
+from .audio import (extract_audio, split_audio)
