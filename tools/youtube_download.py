@@ -27,6 +27,6 @@ def download_youtube_video_and_subs(youtube_ids, directory=''):
                 ydl.download(['http://www.youtube.com/watch?v={}'.format(youtube_id)])
             except Exception as e:
                 print('Exception: {}'.format(e))
-                failures[youtube_id] = e
+                failures[youtube_id] = str(e)
 
     return failures

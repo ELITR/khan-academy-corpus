@@ -1,27 +1,34 @@
 import os
 import tools
 
+youtube_ids_to_process = '../10-download/data/youtube_ids.json'
+youtube_ids_processed_report = 'data/youtube_ids.json'
 input_data_path = '../10-download/data/'
 output_data_path = 'data/'
 video_extension = '.mp4'
+audio_extension = '.mp3'
 
 try:
     os.mkdir(output_data_path)
 except FileExistsError:
     pass
 
-with os.scandir(input_data_path) as it:
-    for entry in it:
-        if entry.name.startswith('.') or not entry.is_dir():
-            continue
-        root, youtube_id = os.path.split(entry.path)
-        video_path = os.path.join(root, youtube_id, youtube_id + video_extension)
-        audio_path = os.path.join(output_data_path, youtube_id, youtube_id)
+youtube_ids = tools.load_json(youtube_ids_to_process)
+processed_youtube_ids = []
 
-        try:
-            os.mkdir(os.path.join(output_data_path, youtube_id))
-        except FileExistsError:
-            pass
+for youtube_id in youtube_ids:
+    video_path = os.path.join(input_data_path, youtube_id, youtube_id + video_extension)
+    audio_path = os.path.join(output_data_path, youtube_id, youtube_id + audio_extension)
+    if not os.path.isfile(video_path):
+        continue
 
-        if os.path.isfile(video_path):
-            tools.extract_audio(video_path, audio_path)
+    # prepare audio dir
+    try:
+        os.mkdir(os.path.join(output_data_path, youtube_id))
+    except FileExistsError:
+        pass
+
+    tools.extract_audio(video_path, audio_path)
+    processed_youtube_ids.append(youtube_id)
+    
+tools.save_json(youtube_ids_processed_report, processed_youtube_ids)
