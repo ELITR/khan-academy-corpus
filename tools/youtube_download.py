@@ -7,12 +7,12 @@ import youtube_dl
 # python -c 'from tools import download_youtube_video_and_subs; download_youtube_video_and_subs(["youtube_id"])'
 
 
-def download_youtube_video_and_subs(youtube_ids, directory=''):
+def download_youtube_video_and_subs(youtube_ids, prefix='kac', directory=''):
     options = {
         'simulate': False,
         'ignoreerrors': False,
         'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
-        'outtmpl': os.path.join(directory, '%(id)s/%(id)s'),  # name the file the ID of the video
+        'outtmpl': os.path.join(directory, prefix + '%(id)s', prefix + '%(id)s'),  # name the file the ID of the video
         'noplaylist': True,  # only download video, not playlist
         'allsubtitles': True,  # download all subtitles
         'writesubtitles': True,
