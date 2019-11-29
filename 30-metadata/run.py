@@ -1,6 +1,6 @@
 import os
 import tools
-from collections import defaultdict, Counter
+from collections import defaultdict
 
 youtube_ids_to_process = '../21-strip-subtitles/data/youtube_ids.json'
 youtube_ids_processed_report = 'data/youtube_ids.json'
@@ -8,6 +8,13 @@ topic_tree_backup = '../10-download/data/topic_tree.json'
 
 output_data_path = 'data/'
 failed_youtube_ids_report = 'data/failed_youtube_ids_report_metadata.json'
+
+
+try:
+    os.mkdir(output_data_path)
+except FileExistsError:
+    pass
+
 
 failed_youtube_ids = {}
 processed_youtube_ids = []
