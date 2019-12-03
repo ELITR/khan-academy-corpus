@@ -7,7 +7,7 @@ import youtube_dl
 # python -c 'from tools import download_youtube_video_and_subs; download_youtube_video_and_subs(["youtube_id"])'
 
 
-def download_youtube_video_and_subs(youtube_ids, prefix='kac', directory=''):
+def download_youtube_video_and_subs(youtube_ids, directory='', prefix='kac'):
     options = {
         'simulate': False,
         'ignoreerrors': False,
@@ -16,17 +16,25 @@ def download_youtube_video_and_subs(youtube_ids, prefix='kac', directory=''):
         'noplaylist': True,  # only download video, not playlist
         'allsubtitles': True,  # download all subtitles
         'writesubtitles': True,
-        'writeautomaticsub': True,
+        'writeautomaticsub': False, # avoid automatic subtitles
+        'skip_download': True, # avoid even the video (so do just subtitles)
     }
 
     failures = {}
 
     with youtube_dl.YoutubeDL(options) as ydl:
         for youtube_id in youtube_ids:
-            try:
-                ydl.download(['http://www.youtube.com/watch?v={}'.format(youtube_id)])
-            except Exception as e:
-                print('Exception: {}'.format(e))
-                failures[youtube_id] = str(e)
+            print(options["outtmpl"])
+            outdir = options["outtmpl"]
+            outdir = os.path.dirname(outdir.replace("%(id)s", youtube_id))
+            print('Checking:', outdir)
+            if os.path.exists(outdir):
+                print('Assuming ID finished:', outdir)
+            else:
+                try:
+                    ydl.download(['http://www.youtube.com/watch?v={}'.format(youtube_id)])
+                except Exception as e:
+                    print('Exception: {}'.format(e))
+                    failures[youtube_id] = str(e)
 
     return failures
