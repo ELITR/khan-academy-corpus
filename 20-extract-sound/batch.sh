@@ -6,4 +6,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 mkdir -p $DIR/data
 
-ls -1 $DIR"/../11-download/data" | $DIR/batch.sh
+python3 $DIR/../scripts/20_extract_sound.py --video_path $DIR/../11-download/data --audio_path $DIR/data

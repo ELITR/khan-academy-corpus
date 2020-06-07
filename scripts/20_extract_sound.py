@@ -17,11 +17,9 @@ input_data_path = args.video_path
 output_data_path = args.audio_path
 
 # get youtube ids from stdin
-youtube_ids = [line.strip() for line in sys.stdin.readlines()]
+prefixed_youtube_ids = [line.strip() for line in sys.stdin.readlines()]
 
-for youtube_id in youtube_ids:
-    prefixed_youtube_id = tools.prefix(youtube_id)
-
+for prefixed_youtube_id in prefixed_youtube_ids:
     video_path = os.path.join(input_data_path, prefixed_youtube_id, prefixed_youtube_id + video_extension)
     audio_path = os.path.join(output_data_path, prefixed_youtube_id, prefixed_youtube_id + audio_extension)
     if not os.path.isfile(video_path):
