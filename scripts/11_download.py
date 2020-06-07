@@ -4,11 +4,11 @@ import argparse
 
 # input args
 parser = argparse.ArgumentParser()
-parser.add_argument("--videos_path", help="path to save videos to", action="store", required=True)
+parser.add_argument("--video_path", help="path to save videos to", action="store", required=True)
 
 args = parser.parse_args()
 
-videos_path = args.videos_path
+videos_path = args.video_path
 
 # get youtube ids from stdin
 youtube_ids = [line.strip() for line in sys.stdin.readlines()]
