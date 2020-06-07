@@ -10,6 +10,7 @@ from .core import (
     save_json,
     load_yaml,
     save_yaml,
+    save_dump,
     prefix,
 )
 
