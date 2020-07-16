@@ -9,9 +9,9 @@ Either download everything in serial:
 nohup nice ./run.py > log-for-this-run &
 ```
 
-Or run in arbitrary amount of batches in parralel (youtube ids are expected on standard input):
+Or run an arbitrary amount of batches in parralel (youtube ids are expected on standard input):
 ```
-nohup nice ./batch.py < [YOUTUBE IDS] > > log-for-this-run &
+nohup nice ./batch.py < [YOUTUBE IDS] > log-for-this-run &
 ```
 
 **WARNING**

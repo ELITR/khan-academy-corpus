@@ -1,6 +1,6 @@
-# Extract audio from downloaded videos
+# Strip subtitles
 
-Second section extracts audio from downloaded videos and strips subtitles of timestamps and various tags.
+Second section extracts audio from downloaded videos and strips subtitles of timestamps and various tags. 
 
 Either process everything in serial:
 ```
