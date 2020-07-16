@@ -2,15 +2,20 @@ import os
 import tools
 from collections import Counter
 from itertools import chain
+import argparse
+import logging
 
-video_metadata_path = '../30-metadata/data/video_metadata.json'
-output_data_path = 'data/'
+logging.basicConfig(format='%(process)d-%(levelname)s-%(message)s')
 
+# input args
+parser = argparse.ArgumentParser()
+parser.add_argument("--output_path", help="path to save metadata to", action="store", required=True)
+parser.add_argument("--video_metadata_path", help="path to video metadata", action="store", required=True)
 
-try:
-    os.mkdir(output_data_path)
-except FileExistsError:
-    pass
+args = parser.parse_args()
+
+output_data_path = args.output_path
+video_metadata_path = args.video_metadata_path
 
 
 video_metadata = tools.load_json(video_metadata_path)
