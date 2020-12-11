@@ -22,5 +22,14 @@ def load_yaml(path):
         return yaml.load(f.read())
 
 
+def save_dump(path, value):
+    with open(path, 'w') as f:
+        try:
+            for item in value:
+                f.write(str(item) + '\n')
+        except TypeError:
+            f.write(str(value))
+
+
 def prefix(string, prefix='kac'):
     return prefix + string

@@ -1,5 +1,6 @@
 # khan-academy-corpus specific
 /*/data/
+khan-venv
 
 
 # Byte-compiled / optimized / DLL files
@@ -131,3 +132,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+# ide stuffs
+.idea/
+*.code-workspace

@@ -1,25 +1,22 @@
 import os
+import sys
 import tools
 from collections import defaultdict
+import argparse
+import logging
 
-youtube_ids_to_process = '../21-strip-subtitles/data/youtube_ids.json'
-youtube_ids_processed_report = 'data/youtube_ids.json'
-topic_tree_backup = '../10-download/data/topic_tree.json'
+logging.basicConfig(format='%(process)d-%(levelname)s-%(message)s')
 
-output_data_path = 'data/'
-failed_youtube_ids_report = 'data/failed_youtube_ids_report_metadata.json'
+# input args
+parser = argparse.ArgumentParser()
+parser.add_argument("--output_path", help="path to save metadata to", action="store", required=True)
+parser.add_argument("--topic_tree_backup", help="path to backup of Khan academy topic tree", action="store", required=True)
 
+args = parser.parse_args()
 
-try:
-    os.mkdir(output_data_path)
-except FileExistsError:
-    pass
+output_data_path = args.output_path
+topic_tree_backup = args.topic_tree_backup
 
-
-failed_youtube_ids = {}
-processed_youtube_ids = []
-
-youtube_ids = tools.load_json(topic_tree_backup)
 topic_tree = tools.load_json(topic_tree_backup)
 
 
@@ -30,44 +27,36 @@ metadata_mask = ['author_names', 'creation_date', 'date_added', 'description', '
 
 topic_tree_leafs = tools.get_leafs(topic_tree)
 
-print('video metadata')
+logging.info('Gathering video metadata')
 video_metadata = defaultdict(list)
 for leaf in topic_tree_leafs:
     video_metadata[leaf['youtube_id']].append({key: leaf[key] for key in metadata_mask})
 
 video_metadata = dict(video_metadata)
 
-print('make map')
+logging.info('Creating simplified map of the topic tree')
 topic_tree_map = tools.make_map(topic_tree)
 
-print('output')
+logging.info('Writing common metadata files')
 tools.save_json(os.path.join(output_data_path, 'video_metadata.json'), video_metadata)
 tools.save_yaml(os.path.join(output_data_path, 'video_metadata.yaml'), video_metadata)
 tools.save_json(os.path.join(output_data_path, 'topic_tree_map.json'), topic_tree_map)
 tools.save_yaml(os.path.join(output_data_path, 'topic_tree_map.yaml'), topic_tree_map)
 
-print('individual videos')
-for youtube_id in youtube_ids:
-    print(youtube_id)
+logging.info('Writing metadata files for individual videos')
+for youtube_id in video_metadata.keys():
     try:
-        prefix_youtube_id = tools.prefix(youtube_id)
+        prefixed_youtube_id = tools.prefix(youtube_id)
 
-        output_path = os.path.join(output_data_path, prefix_youtube_id, prefix_youtube_id + '_metadata')
+        output_path = os.path.join(output_data_path, prefixed_youtube_id, prefixed_youtube_id + '_metadata')
 
         # prepare output audio dir
         try:
-            os.mkdir(os.path.join(output_data_path, prefix_youtube_id))
+            os.mkdir(os.path.join(output_data_path, prefixed_youtube_id))
         except FileExistsError:
             pass
 
         tools.save_json(output_path + '.json', video_metadata[youtube_id])
         tools.save_yaml(output_path + '.yaml', video_metadata[youtube_id])
     except Exception as e:
-        print('failed')
-        failed_youtube_ids[youtube_id] = str(e)
-    else:
-        processed_youtube_ids.append(youtube_id)
-
-
-tools.save_json(youtube_ids_processed_report, processed_youtube_ids)
-tools.save_json(failed_youtube_ids_report, failed_youtube_ids)
+        logging.warning('Youtube id %s failed: %s', youtube_id, str(e))
