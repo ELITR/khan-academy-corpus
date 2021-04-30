@@ -6,6 +6,6 @@ idna==2.8
 pyvtt==0.0.2
 requests==2.22.0
 ujson==1.35
-urllib3==1.25.7
+urllib3==1.25.8
 youtube-dl==2019.11.5
 pyyaml
